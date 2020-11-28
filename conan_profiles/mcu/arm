@@ -1,7 +1,7 @@
 include(default)
 
 # Note that I assume that you use a custom settings.yml where you add
-# an os key to distinguish between different Mcus and normal os
+# the os key "Mcu" to distinguish between different Mcus and normal os
 [settings]
 os=Mcu
 arch=armv7
