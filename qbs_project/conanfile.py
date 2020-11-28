@@ -13,7 +13,7 @@ class ConanQbsExample(ConanFile):
     ]
 
     def toolchain(self):
-        with tools.environment_append(self.deps_env_info.vars):
+        with tools.environment_append(self.env):
             qbs_toolchain = QbsGenericToolchain(self)
             qbs_toolchain.generate()
 
