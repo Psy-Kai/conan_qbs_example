@@ -1,6 +1,6 @@
 from conans import ConanFile, tools
-from conans.client.toolchain.qbs.generic import QbsGenericToolchain
-from conans.client.build.qbs import Qbs
+from conan.tools.qbs import QbsToolchain
+from conan.tools.qbs import Qbs
 
 
 class ConanQbsExample(ConanFile):
@@ -11,15 +11,37 @@ class ConanQbsExample(ConanFile):
         "os",
         "compiler"
     ]
+    generators = ["qbs", "json"]
 
-    def toolchain(self):
-        with tools.environment_append(self.env):
-            qbs_toolchain = QbsGenericToolchain(self)
-            qbs_toolchain.generate()
+    def generate(self):
+        # properly merge environment variables
+        env = {}
+        for dep in self.deps_env_info.deps:
+            for var, value in self.deps_env_info[dep].vars.items():
+                if not value:
+                    continue
+                if var in env:
+                    if type(env[var]) is list:
+                        env[var].extend(value)
+                    else:
+                        env[var] += ' %s' % value
+                else:
+                    env[var] = value
+
+        with tools.environment_append(env):
+            toolchain = QbsToolchain(self)
+            toolchain.generate()
 
     def build(self):
         qbs = Qbs(self, 'example.qbs')
+
+        # we may have set additional properties in qbs so compile for proper Qbs profile
+        if self.settings.os == "Mcu":
+            qbs.use_toolchain_profile = "mcu/arm"
+
         qbs.add_configuration("default", {
-            'projects.example.conanfileDir': self.recipe_folder
+            'projects.conanBuildFolder': self.build_folder
         })
         qbs.build()
+        if tools.get_env("CONAN_RUN_TESTS", True):
+            qbs.build(products=["autotest-runner"])
