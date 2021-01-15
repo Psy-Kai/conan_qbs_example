@@ -17,7 +17,6 @@ Project {
 
     references: [
         "conan.qbs",
-        "profiles.qbs",
         
         "src/src.qbs",
     ]

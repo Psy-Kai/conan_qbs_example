@@ -40,8 +40,8 @@ class ConanQbsExample(ConanFile):
             qbs.use_toolchain_profile = "mcu/arm"
 
         qbs.add_configuration("default", {
-            'projects.conanBuildFolder': self.build_folder
+            'projects.example.conanBuildFolder': self.build_folder
         })
         qbs.build()
-        if tools.get_env("CONAN_RUN_TESTS", True):
+        if tools.get_env("CONAN_RUN_TESTS", False):
             qbs.build(products=["autotest-runner"])

@@ -5,6 +5,7 @@ import ConanTandemProbe
 Project {
     references: [
         FileInfo.joinPaths(conan.generatedFilesPath, "conan_toolchain.qbs"),
+        "profiles.qbs",
         FileInfo.joinPaths(conan.generatedFilesPath, "conanbuildinfo.qbs"),
     ]
 

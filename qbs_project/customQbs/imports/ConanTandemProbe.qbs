@@ -1,3 +1,4 @@
+import qbs.File
 import qbs.Probes
 import "conan.js" as ConanHelper
 
@@ -27,21 +28,26 @@ Project {
             return conanFileProbe.generatedFilesPath
         return buildFolder;
     }
-    property var json: conanFileProbe.json;
+    property var json: {
+        if (_probeConanfile)
+            return conanFileProbe.json;
+        return customConanBuildInfoJsonProbe.json;
+    }
 
     /* private */
-    readonly property bool _probeConanfile: !(conanBuildFolder && File.exists(conanBuildFolder))
+    readonly property bool _probeConanfile: !(buildFolder && File.exists(buildFolder))
 
     Probe {
         id: customConanBuildInfoJsonProbe
 
         condition: !project._probeConanfile
-        readonly property path generatedFilesPath: buildFolder
+        readonly property bool _probeConanfile: tandem._probeConanfile
+        readonly property path _generatedFilesPath: buildFolder
         property var json
 
         configure: {
             if (!_probeConanfile)
-                json = ConanHelper.probeBuildInfoJson(generatedFilesPath);
+                json = ConanHelper.probeBuildInfoJson(_generatedFilesPath);
         }
     }
 
