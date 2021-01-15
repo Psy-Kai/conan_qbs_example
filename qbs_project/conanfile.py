@@ -38,6 +38,8 @@ class ConanQbsExample(ConanFile):
         # we may have set additional properties in qbs so compile for proper Qbs profile
         if self.settings.os == "Mcu":
             qbs.use_toolchain_profile = "mcu/arm"
+        else:
+            qbs.use_toolchain_profile = "default"
 
         qbs.add_configuration("default", {
             'projects.example.conanBuildFolder': self.build_folder

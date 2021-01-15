@@ -9,10 +9,13 @@ Project {
     /* [1] needed until QtCreator can create temporary kits from predefined profiles
        (https://bugreports.qt.io/browse/QTCREATORBUG-23985) */
     readonly property string _conanProfile: {
-        const profile = Environment.getEnv("CONAN_DEFAULT_PROFILE_PATH");
-        if (!profile)
+        if (!profile.startsWith("qtc_"))
+            return profile;
+
+        const conanProfile = Environment.getEnv("CONAN_DEFAULT_PROFILE_PATH");
+        if (!conanProfile)
             return "default";
-        return profile;
+        return conanProfile;
     }
 
     references: [
