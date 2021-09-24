@@ -1,5 +1,5 @@
 # conan_qbs_example
-Example project showing the usage of conans Qbs build helper and QbsToolchain generator
+Example project showing the usage of conans Qbs build helper and QbsProfile generator
 
 THIS EXAMPLE WILL REQUIRES CONAN 1.33
 
@@ -18,8 +18,8 @@ To setup this example you need to execute the following steps:
 `conan export toolchain_definitions/conanfile_none_eabi_arm.py` and
 `conan export toolchain_definitions/conanfile_generic_mcu_flags.py`
 
-Now compiling and package creation can start :D  
-Just call `qbs -f qbs_project/example.qbs` or `conan create qbs_project` 
+Now compiling and package creation can start :D
+Just call `qbs -f qbs_project/example.qbs` or `conan create qbs_project`
 for native compilation and
-`qbs -f qbs_project/example.qbs profile:mcu/arm` or 
+`qbs -f qbs_project/example.qbs profile:mcu/arm` or
 `conan create qbs_project -pr:b default -pr:h mcu/arm` to cross compile for arm.
